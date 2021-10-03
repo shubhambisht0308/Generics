@@ -2,7 +2,7 @@ package properties;
 
 import java.util.Comparator;
 
-public class Id extends Property<Integer> implements Comparator<Entry> {
+public class Id extends Property<Integer> {
 
 	int id;
 	

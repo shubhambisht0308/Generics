@@ -15,13 +15,7 @@ public class OperationManager {
 		this.dbOject = obj;
 	}
 	
-	public List<Entry> execute(Operation op, Integer columns)  {
-        CustomComparator comparator = new CustomComparator();
-        comparator.addComparator(new Price());
-        
-        List<Entry> sortedList = dbOject.getDB();
-        sortedList.sort(comparator);
-        
-        return sortedList;
+	public List<Entry> execute(Operation op, List<Property> priority)  {
+        return op.execute(dbOject.getDB(), priority);
 	}
 }

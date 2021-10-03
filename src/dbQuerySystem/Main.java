@@ -1,12 +1,16 @@
 package dbQuerySystem;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-import util.*;
-
+import util.Utils.*;
 import operations.*;
 import properties.Entry;
+import properties.*;
 
 class UserEntry {
 	String name;
@@ -20,7 +24,9 @@ class UserEntry {
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		
 		DB dbObject = new DB();
 		OperationManager operationManager = new OperationManager(dbObject);
 		
@@ -51,14 +57,39 @@ public class Main {
 		entryist.add(new UserEntry("dfdg", 44.7));
 		entryist.add(new UserEntry("nndsd", 544.7));
 		
+		entryist.add(new UserEntry("gds", 90.7));
+		entryist.add(new UserEntry("jyd", 365442.7));
+		entryist.add(new UserEntry("cszsdw", 38744.7));
+		entryist.add(new UserEntry("xxga", 344532.7));
+		entryist.add(new UserEntry("jndf", 7867));
+		
 		for (UserEntry entry : entryist) {
 			dbObject.addEntry(entry.name, entry.price);
 		}
 		
-		Operation op1 = new AscendingSort();
-		Operation op2 = new DescendingSort();
+		System.out.println("Enter sort type :");
+		int operationType = Integer.parseInt(reader.readLine());
+		Operation op = null;
 		
-		List<Entry> list = operationManager.execute(op1, Utils.Properties.PRICE);
+        if (operationType == 1) {
+        	op = new AscendingSort<Entry>();
+        } else {
+        	op = new DescendingSort<Entry>();
+        }
+        List<Property> colPriority = new LinkedList<>();
+        while(true) {
+        	System.out.println("Enter column priorities (ID, NAME, PRICE). 4 to exit");
+        	int input = Integer.parseInt(reader.readLine());
+        	if (input == 4) break;
+        	
+        	switch(input) {
+        	case 1 : colPriority.add(new Id()); break;
+        	case 2 : colPriority.add(new Name()); break;
+        	case 3 : colPriority.add(new Price()); break;
+        	}
+        }
+		
+		List<Entry> list = operationManager.execute(op, colPriority);
 		
 		dbObject.printDB(list);
 		

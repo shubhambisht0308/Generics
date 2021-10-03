@@ -2,7 +2,7 @@ package properties;
 
 import java.util.Comparator;
 
-public class Name extends Property<String> implements Comparator<Entry> {
+public class Name extends Property<String> {
 
 	String name;
 	
